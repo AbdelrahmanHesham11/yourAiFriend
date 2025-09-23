@@ -151,7 +151,7 @@ const ContactUs = () => {
                       <Textarea
                         id="message"
                         rows={4}
-                        placeholder="Tell us what's on your mind..."
+                        placeholder="Tell me what's on your mind..."
                         className="w-full bg-background/50 border-primary/20 focus:border-primary warm-border resize-none"
                       />
                     </div>
