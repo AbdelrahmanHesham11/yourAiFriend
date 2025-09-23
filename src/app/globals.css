@@ -1,26 +1,273 @@
 @import "tailwindcss";
+@import "tw-animate-css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant dark (&:is(.dark *));
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+:root {
+  /* Base Variables */
+  --radius: 0.75rem; /* Slightly more rounded for friendliness */
+
+  /* Warm & Sweet Theme Colors */
+  --warm-cream: #faeeee;
+  --warm-peach: #fed7aa;
+  --warm-coral: #fb923c;
+  --warm-orange: #ea580c;
+  --warm-pink: #ec4899;
+  --warm-rose: #f43f5e;
+  --warm-purple: #a855f7;
+  --warm-lavender: #c084fc;
+  --warm-mint: #34d399;
+  --warm-sage: #6ee7b7;
+  --warm-sky: #38bdf8;
+  --warm-indigo: #6366f1;
+
+  /* Light mode (default) */
+  --background: var(--warm-cream);
+  --foreground: #451a03;
+
+  /* Card and popover elements */
+  --card: #ffffff;
+  --card-foreground: #451a03;
+  --popover: #ffffff;
+  --popover-foreground: #451a03;
+
+  /* Primary - Warm coral/orange */
+  --primary: var(--warm-coral);
+  --primary-foreground: #ffffff;
+
+  /* Secondary - Soft lavender */
+  --secondary: var(--warm-lavender);
+  --secondary-foreground: #ffffff;
+
+  /* Accent - Sweet mint */
+  --accent: var(--warm-mint);
+  --accent-foreground: #064e3b;
+
+  /* Muted elements */
+  --muted: #f3f4f6;
+  --muted-foreground: #6b7280;
+
+  /* System colors */
+  --destructive: var(--warm-rose);
+  --border: rgba(251, 146, 60, 0.2);
+  --input: rgba(251, 146, 60, 0.1);
+  --ring: var(--warm-coral);
+
+  /* Chart colors - warm palette */
+  --chart-1: var(--warm-coral);
+  --chart-2: var(--warm-pink);
+  --chart-3: var(--warm-lavender);
+  --chart-4: var(--warm-mint);
+  --chart-5: var(--warm-sky);
+
+  /* Sidebar colors */
+  --sidebar: #fefbf3;
+  --sidebar-foreground: #451a03;
+  --sidebar-primary: var(--warm-coral);
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: var(--warm-mint);
+  --sidebar-accent-foreground: #064e3b;
+  --sidebar-border: rgba(251, 146, 60, 0.2);
+  --sidebar-ring: var(--warm-coral);
+
+  /* Custom Warm UI Variables */
+  --warm-glow: rgba(251, 146, 60, 0.1);
+  --warm-glow-strong: rgba(251, 146, 60, 0.3);
+  --warm-gradient-start: var(--warm-coral);
+  --warm-gradient-end: var(--warm-pink);
+  --warm-shadow: rgba(251, 146, 60, 0.2);
+  --warm-text-bright: #451a03;
+  --warm-text-muted: rgba(69, 26, 3, 0.7);
+  --warm-text-dim: rgba(69, 26, 3, 0.5);
+}
+
+.dark {
+  /* Dark mode - cozy and warm */
+  --background: #1c1917;
+  --foreground: #fef7ed;
+
+  /* Card and popover elements */
+  --card: #292524;
+  --card-foreground: #fef7ed;
+  --popover: #292524;
+  --popover-foreground: #fef7ed;
+
+  /* Primary - Warm coral (slightly brighter for dark) */
+  --primary: #fb923c;
+  --primary-foreground: #1c1917;
+
+  /* Secondary - Soft lavender */
+  --secondary: #c084fc;
+  --secondary-foreground: #1c1917;
+
+  /* Accent - Sweet mint */
+  --accent: #34d399;
+  --accent-foreground: #1c1917;
+
+  /* Muted elements */
+  --muted: #44403c;
+  --muted-foreground: #a8a29e;
+
+  /* System colors */
+  --destructive: #f87171;
+  --border: rgba(251, 146, 60, 0.3);
+  --input: rgba(251, 146, 60, 0.2);
+  --ring: var(--warm-coral);
+
+  /* Chart colors - warm palette for dark */
+  --chart-1: #fb923c;
+  --chart-2: #ec4899;
+  --chart-3: #c084fc;
+  --chart-4: #34d399;
+  --chart-5: #38bdf8;
+
+  /* Sidebar colors */
+  --sidebar: #1c1917;
+  --sidebar-foreground: #fef7ed;
+  --sidebar-primary: #fb923c;
+  --sidebar-primary-foreground: #1c1917;
+  --sidebar-accent: #34d399;
+  --sidebar-accent-foreground: #1c1917;
+  --sidebar-border: rgba(251, 146, 60, 0.3);
+  --sidebar-ring: var(--warm-coral);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Warm animations */
+@keyframes warm-pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.02);
+  }
+}
+
+@keyframes gentle-bounce {
+  0%, 20%, 53%, 80%, 100% {
+    transform: translate3d(0, 0, 0);
+  }
+  40%, 43% {
+    transform: translate3d(0, -8px, 0);
+  }
+  70% {
+    transform: translate3d(0, -4px, 0);
+  }
+}
+
+@keyframes warm-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(251, 146, 60, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(251, 146, 60, 0.5);
+  }
+}
+
+@keyframes heart-beat {
+  0% {
+    transform: scale(1);
+  }
+  14% {
+    transform: scale(1.1);
+  }
+  28% {
+    transform: scale(1);
+  }
+  42% {
+    transform: scale(1.1);
+  }
+  70% {
+    transform: scale(1);
+  }
+}
+
+.animate-warm-pulse {
+  animation: warm-pulse 2s ease-in-out infinite;
+}
+
+.animate-gentle-bounce {
+  animation: gentle-bounce 1.5s ease-in-out infinite;
+}
+
+.animate-warm-glow {
+  animation: warm-glow 3s ease-in-out infinite;
+}
+
+.animate-heart-beat {
+  animation: heart-beat 1.3s ease-in-out infinite;
+}
+
+/* Custom utility classes for the warm theme */
+.warm-gradient {
+  background: linear-gradient(135deg, var(--warm-gradient-start), var(--warm-gradient-end));
+}
+
+.warm-shadow {
+  box-shadow: 0 10px 25px -5px var(--warm-shadow);
+}
+
+.warm-border {
+  border: 1px solid var(--warm-glow-strong);
+}
+
+.glass-warm {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(251, 146, 60, 0.2);
 }
