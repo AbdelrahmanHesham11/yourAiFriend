@@ -1,25 +1,45 @@
-myAifriend
+**myAifriend**
 
-myAifriend is a simple web app built to be a supportive companion when you need someone to talk to. You can call into the app, speak freely about what’s on your mind, and it will listen, respond, and generate remedies or motivational quotes tailored to what you share. It’s not about therapy or professional advice—it’s just meant to be a voice on the other side when you want to vent, clear your thoughts, or have a reminder that you’re not alone.
+myAifriend is a simple yet thoughtful web app designed to be a supportive companion when you need someone to talk to.
+You can call into the app, share what’s on your mind, and it will listen, respond, and generate helpful remedies or motivational quotes based on what you share.
 
-The app uses AI to generate responses in real time and provide a kind of “shoulder to lean on” when you’re stressed. You talk, it listens, and it gives you something back that can help you move forward.
+This isn’t therapy or professional advice—it’s a friendly AI presence to vent to, clear your thoughts, and remind you that you’re not alone.
+The AI processes your words in real time, offering comforting responses and positive guidance like a digital “shoulder to lean on.”
 
-Dependencies
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+**Features**
 
-To run myAifriend, make sure you have the following installed:
+Real-time AI Conversations – Speak freely and get instant responses.
 
-Node.js (v18 or later)
+Motivational Quotes & Remedies – Personalized, uplifting messages tailored to your input.
 
-npm or yarn (package manager)
+Secure User Authentication – Safe login powered by Clerk.
+
+Clean UI – Built with Next.js and styled with TailwindCSS.
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+**Dependencies**
+
+To run myAifriend locally, make sure the following are installed:
+
+Node.js
+ (v18 or later)
+
+npm
+ or yarn
+ (package manager)
 
 Next.js
 
 React
 
-TailwindCSS (for styling)
+TailwindCSS
+ (for styling)
 
-Clerk (for authentication)
+Clerk
+ (for authentication)
 
-Vapi.ai (for AI voice and workflow integration)
+Vapi.ai
+ (AI voice and workflow integration)
 
-dotenv (for environment variable management)
+dotenv
+ (for environment variable management)
