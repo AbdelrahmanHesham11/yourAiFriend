@@ -1,36 +1,25 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+myAifriend
 
-## Getting Started
+myAifriend is a simple web app built to be a supportive companion when you need someone to talk to. You can call into the app, speak freely about what’s on your mind, and it will listen, respond, and generate remedies or motivational quotes tailored to what you share. It’s not about therapy or professional advice—it’s just meant to be a voice on the other side when you want to vent, clear your thoughts, or have a reminder that you’re not alone.
 
-First, run the development server:
+The app uses AI to generate responses in real time and provide a kind of “shoulder to lean on” when you’re stressed. You talk, it listens, and it gives you something back that can help you move forward.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Dependencies
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+To run myAifriend, make sure you have the following installed:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Node.js (v18 or later)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+npm or yarn (package manager)
 
-## Learn More
+Next.js
 
-To learn more about Next.js, take a look at the following resources:
+React
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+TailwindCSS (for styling)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Clerk (for authentication)
 
-## Deploy on Vercel
+Vapi.ai (for AI voice and workflow integration)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+dotenv (for environment variable management)
