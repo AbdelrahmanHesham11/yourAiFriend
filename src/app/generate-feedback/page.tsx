@@ -119,30 +119,30 @@ const GenerateProgramPage = () => {
     };
   }, []);
 
-  const toggleCall = async () => {
-    if (callActive) vapi.stop();
-    else {
-      try {
-        setConnecting(true);
-        setMessages([]);
-        setCallEnded(false);
-
-        const fullName = user?.firstName
-          ? `${user.firstName} ${user.lastName || ""}`.trim()
-          : "There";
-
-        await vapi.start(process.env.NEXT_PUBLIC_VAPI_WORKFLOW_ID!, {
-          variableValues: {
-            full_name: fullName,
-            user_id: user?.id,
-          },
-        });
-      } catch (error) {
-        console.log("Failed to start call", error);
-        setConnecting(false);
-      }
-    }
-  };
+ const toggleCall = async () => {
+          if (callActive) {
+            vapi.stop();
+          } else {
+            try {
+              setConnecting(true);
+              setMessages([]);
+              setCallEnded(false);
+              const fullName = user?.firstName
+                ? `${user.firstName} ${user.lastName || ""}`.trim()
+                : "There";
+    
+                await vapi.start(process.env.NEXT_PUBLIC_VAPI_ASSISTANT_ID!, {
+                  variableValues: {
+                    full_name: fullName,
+                    user_id: user?.id,
+                  },
+                });
+              } catch (error) {
+                console.log("Failed to start call", error);
+                setConnecting(false);
+              }
+            }
+          };
 
   return (
     <div className="flex flex-col min-h-screen text-foreground overflow-hidden  pb-6 pt-24">
@@ -270,7 +270,7 @@ const GenerateProgramPage = () => {
               {messages.map((msg, index) => (
                 <div key={index} className="message-item animate-fadeIn">
                   <div className="font-semibold text-xs text-muted-foreground mb-1">
-                    {msg.role === "assistant" ? " AI Friend" : "You"}:
+                    {msg.role === "caller" ? " AI Friend" : "You"}:
                   </div>
                   <p className="text-foreground">{msg.content}</p>
                 </div>
