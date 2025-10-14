@@ -1,8 +1,7 @@
 "use client";
 
 import { UserProfile, useUser } from "@clerk/nextjs";
-import { Button } from "@/components/ui/button";
-import { MessageSquare, Heart, Clock, TrendingUp } from "lucide-react";
+
 
 const ProfilePage = () => {
   const { user } = useUser();

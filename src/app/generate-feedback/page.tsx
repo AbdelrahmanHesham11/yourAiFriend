@@ -7,11 +7,23 @@ import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
+interface VapiMessage {
+  type: string;
+  transcript?: string;
+  transcriptType?: string;
+  role?: string;
+}
+
+interface ChatMessage {
+  content: string;
+  role: string;
+}
+
 const GenerateProgramPage = () => {
   const [callActive, setCallActive] = useState(false);
   const [connecting, setConnecting] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
-  const [messages, setMessages] = useState<any[]>([]);
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [callEnded, setCallEnded] = useState(false);
 
   const { user } = useUser();
@@ -22,45 +34,39 @@ const GenerateProgramPage = () => {
   useEffect(() => {
     const originalError = console.error;
 
-    console.error = function (msg, ...args) {
+    console.error = function (msg: unknown, ...args: unknown[]) {
       if (
-        msg &&
+        typeof msg === "string" &&
         (msg.includes("Meeting has ended") ||
           (args[0] && args[0].toString().includes("Meeting has ended")))
       ) {
         console.log("Ignoring known error: Meeting has ended");
-        return; // don't pass to original handler
+        return;
       }
 
-      // pass all other errors to the original handler
       return originalError.call(console, msg, ...args);
     };
 
-    // restore original handler on unmount
     return () => {
       console.error = originalError;
     };
   }, []);
 
-  // auto-scroll messages
   useEffect(() => {
     if (messageContainerRef.current) {
       messageContainerRef.current.scrollTop = messageContainerRef.current.scrollHeight;
     }
   }, [messages]);
 
-  // navigate user to profile page after the call ends
   useEffect(() => {
     if (callEnded) {
       const redirectTimer = setTimeout(() => {
         router.push("/profile");
       }, 1500);
-
       return () => clearTimeout(redirectTimer);
     }
   }, [callEnded, router]);
 
-  // setup event listeners for vapi
   useEffect(() => {
     const handleCallStart = () => {
       console.log("Call started");
@@ -86,14 +92,15 @@ const GenerateProgramPage = () => {
       console.log("AI stopped Speaking");
       setIsSpeaking(false);
     };
-    const handleMessage = (message: any) => {
+
+    const handleMessage = (message: VapiMessage) => {
       if (message.type === "transcript" && message.transcriptType === "final") {
-        const newMessage = { content: message.transcript, role: message.role };
+        const newMessage = { content: message.transcript || "", role: message.role || "system" };
         setMessages((prev) => [...prev, newMessage]);
       }
     };
 
-    const handleError = (error: any) => {
+    const handleError = (error: unknown) => {
       console.log("Vapi Error", error);
       setConnecting(false);
       setCallActive(false);
@@ -107,7 +114,6 @@ const GenerateProgramPage = () => {
       .on("message", handleMessage)
       .on("error", handleError);
 
-    // cleanup event listeners on unmount
     return () => {
       vapi
         .off("call-start", handleCallStart)
@@ -119,38 +125,37 @@ const GenerateProgramPage = () => {
     };
   }, []);
 
- const toggleCall = async () => {
-          if (callActive) {
-            vapi.stop();
-          } else {
-            try {
-              setConnecting(true);
-              setMessages([]);
-              setCallEnded(false);
-              const fullName = user?.firstName
-                ? `${user.firstName} ${user.lastName || ""}`.trim()
-                : "There";
-    
-                await vapi.start(process.env.NEXT_PUBLIC_VAPI_ASSISTANT_ID!, {
-                  variableValues: {
-                    full_name: fullName,
-                    user_id: user?.id,
-                  },
-                });
-              } catch (error) {
-                console.log("Failed to start call", error);
-                setConnecting(false);
-              }
-            }
-          };
+  const toggleCall = async () => {
+    if (callActive) {
+      vapi.stop();
+    } else {
+      try {
+        setConnecting(true);
+        setMessages([]);
+        setCallEnded(false);
+        const fullName = user?.firstName
+          ? `${user.firstName} ${user.lastName || ""}`.trim()
+          : "There";
+
+        await vapi.start(process.env.NEXT_PUBLIC_VAPI_ASSISTANT_ID as string, {
+          variableValues: {
+            full_name: fullName,
+            user_id: user?.id,
+          },
+        });
+      } catch (error) {
+        console.log("Failed to start call", error);
+        setConnecting(false);
+      }
+    }
+  };
 
   return (
     <div className="flex flex-col min-h-screen text-foreground overflow-hidden  pb-6 pt-24">
       <div className="container mx-auto px-4 h-full max-w-5xl">
-        {/* Title */}
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold font-mono">
-            <span>Call your  </span>
+            <span>Call your </span>
             <span className="text-primary uppercase">AI friend now!</span>
           </h1>
           <p className="text-muted-foreground mt-2">
@@ -158,18 +163,14 @@ const GenerateProgramPage = () => {
           </p>
         </div>
 
-        {/* VIDEO CALL AREA */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-          {/* AI ASSISTANT CARD */}
           <Card className="bg-card/90 backdrop-blur-sm border border-border overflow-hidden relative">
             <div className="aspect-video flex flex-col items-center justify-center p-6 relative">
-              {/* AI VOICE ANIMATION */}
               <div
                 className={`absolute inset-0 ${
                   isSpeaking ? "opacity-30" : "opacity-0"
                 } transition-opacity duration-300`}
               >
-                {/* Voice wave animation when speaking */}
                 <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 flex justify-center items-center h-20">
                   {[...Array(5)].map((_, i) => (
                     <div
@@ -186,7 +187,6 @@ const GenerateProgramPage = () => {
                 </div>
               </div>
 
-              {/* AI IMAGE */}
               <div className="relative size-32 mb-4">
                 <div
                   className={`absolute inset-0 bg-primary opacity-10 rounded-full blur-lg ${
@@ -197,17 +197,15 @@ const GenerateProgramPage = () => {
                 <div className="relative w-full h-full rounded-full bg-card flex items-center justify-center border border-border overflow-hidden">
                   <div className="absolute inset-0 bg-gradient-to-b from-primary/10 to-secondary/10"></div>
                   <img
-                      src="/ai-avatar.png"
-                      alt="AI Assistant"
-                      className="w-full h-full object-cover"
-                    />
+                    src="/ai-avatar.png"
+                    alt="AI Assistant"
+                    className="w-full h-full object-cover"
+                  />
                 </div>
               </div>
 
               <h2 className="text-xl font-bold text-foreground">AI friend</h2>
               <p className="text-sm text-muted-foreground mt-1">Advice and support</p>
-
-              {/* SPEAKING INDICATOR */}
 
               <div
                 className={`mt-4 flex items-center gap-2 px-3 py-1 rounded-full bg-card border border-border ${
@@ -224,24 +222,21 @@ const GenerateProgramPage = () => {
                   {isSpeaking
                     ? "Speaking..."
                     : callActive
-                      ? "Listening..."
-                      : callEnded
-                        ? "Redirecting to profile..."
-                        : "Waiting..."}
+                    ? "Listening..."
+                    : callEnded
+                    ? "Redirecting to profile..."
+                    : "Waiting..."}
                 </span>
               </div>
             </div>
           </Card>
 
-          {/* USER CARD */}
           <Card className={`bg-card/90 backdrop-blur-sm border overflow-hidden relative`}>
             <div className="aspect-video flex flex-col items-center justify-center p-6 relative">
-              {/* User Image */}
               <div className="relative size-32 mb-4">
                 <img
                   src={user?.imageUrl}
                   alt="User"
-                  // ADD THIS "size-full" class to make it rounded on all images
                   className="size-full object-cover rounded-full"
                 />
               </div>
@@ -251,7 +246,6 @@ const GenerateProgramPage = () => {
                 {user ? (user.firstName + " " + (user.lastName || "")).trim() : "Guest"}
               </p>
 
-              {/* User Ready Text */}
               <div className={`mt-4 flex items-center gap-2 px-3 py-1 rounded-full bg-card border`}>
                 <div className={`w-2 h-2 rounded-full bg-muted`} />
                 <span className="text-xs text-muted-foreground">Ready</span>
@@ -260,7 +254,6 @@ const GenerateProgramPage = () => {
           </Card>
         </div>
 
-        {/* MESSAGE COINTER  */}
         {messages.length > 0 && (
           <div
             ref={messageContainerRef}
@@ -270,7 +263,7 @@ const GenerateProgramPage = () => {
               {messages.map((msg, index) => (
                 <div key={index} className="message-item animate-fadeIn">
                   <div className="font-semibold text-xs text-muted-foreground mb-1">
-                    {msg.role === "caller" ? " AI Friend" : "You"}:
+                    {msg.role === "caller" ? "AI Friend" : "You"}:
                   </div>
                   <p className="text-foreground">{msg.content}</p>
                 </div>
@@ -280,7 +273,7 @@ const GenerateProgramPage = () => {
                 <div className="message-item animate-fadeIn">
                   <div className="font-semibold text-xs text-primary mb-1">System:</div>
                   <p className="text-foreground">
-                    Some advice and plans has been created in your profile check it out!.
+                    Some advice and plans have been created in your profile — check it out!
                   </p>
                 </div>
               )}
@@ -288,15 +281,14 @@ const GenerateProgramPage = () => {
           </div>
         )}
 
-        {/* CALL CONTROLS */}
         <div className="w-full flex justify-center gap-4">
           <Button
             className={`w-40 text-xl rounded-3xl ${
               callActive
                 ? "bg-destructive hover:bg-destructive/90"
                 : callEnded
-                  ? "bg-green-600 hover:bg-green-700"
-                  : "bg-primary hover:bg-primary/90"
+                ? "bg-green-600 hover:bg-green-700"
+                : "bg-primary hover:bg-primary/90"
             } text-white relative`}
             onClick={toggleCall}
             disabled={connecting || callEnded}
@@ -309,10 +301,10 @@ const GenerateProgramPage = () => {
               {callActive
                 ? "End Call"
                 : connecting
-                  ? "Connecting..."
-                  : callEnded
-                    ? "View Profile"
-                    : "Start Call"}
+                ? "Connecting..."
+                : callEnded
+                ? "View Profile"
+                : "Start Call"}
             </span>
           </Button>
         </div>
@@ -320,4 +312,5 @@ const GenerateProgramPage = () => {
     </div>
   );
 };
+
 export default GenerateProgramPage;
