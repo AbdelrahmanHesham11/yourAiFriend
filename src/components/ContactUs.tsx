@@ -103,7 +103,7 @@ const ContactUs = () => {
               <div className="relative max-w-lg mx-auto">
                 <div className="relative overflow-hidden rounded-lg bg-card warm-shadow p-6 space-y-6">
                   <div className="text-center">
-                    <h3 className="text-2xl font-bold text-foreground mb-2">Send Me a message</h3>
+                    <h3 className="text-2xl font-bold text-foreground mb-2">Send me a message!</h3>
                     <p className="text-muted-foreground">I will get back to you soon!</p>
                   </div>
 
