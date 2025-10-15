@@ -3,7 +3,7 @@
 myAifriend is a simple yet thoughtful web app designed to be a supportive companion when you need someone to talk to.
 You can call into the app, share what’s on your mind, and it will listen, respond, and generate helpful remedies or motivational quotes based on what you share.
 
-This isn’t therapy or professional advice—it’s a friendly AI presence to vent to, clear your thoughts, and remind you that you’re not alone.
+This isn’t therapy or professional advice, it’s a friendly AI presence to vent to, clear your thoughts, and remind you that you’re not alone.
 The AI processes your words in real time, offering comforting responses and positive guidance like a digital “shoulder to lean on.”
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
