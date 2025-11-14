@@ -1,5 +1,6 @@
 **myAifriend**
-
+You can test it live here!
+https://your-ai-friend-two.vercel.app/
 myAifriend is a simple yet thoughtful web app designed to be a supportive companion when you need someone to talk to.
 You can call into the app, share what’s on your mind, and it will listen, respond, and generate helpful remedies or motivational quotes based on what you share.
 
