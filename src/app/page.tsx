@@ -28,7 +28,7 @@ const HomePage = () => {
                   <span className="text-primary"> & Support</span>
                 </div>
               </h1>
-
+                {/*FIX FLEXBOX */}
               {/* SEPARATOR LINE */}
               <div className="h-px w-full bg-gradient-to-r from-primary via-secondary to-primary opacity-50"></div>
 
